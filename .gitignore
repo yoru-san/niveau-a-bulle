@@ -57,3 +57,21 @@ typings/
 # dotenv environment variables file
 .env
 
+# Mac
+.DS_Store
+
+# Plugins
+plugins/
+
+# iOS
+platforms/ios/
+*.xcuserdatad
+
+# android
+platforms/android/
+
+# wp8
+platforms/wp8/
+
+# res
+resources/signing

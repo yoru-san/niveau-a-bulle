@@ -9,26 +9,48 @@ var app = {
 
     // deviceready Event Handler
     onDeviceReady: function() {
-
     var options = { frequency: 1000 };  // Update every 1 seconds
     var watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
     },
-
-    // Update DOM on a Received Event
 };
 
+var lastX;
+var lastY;
+var denoiserRatio = 10;
 function onSuccess (acceleration) {
-    x = acceleration.x;
-    y = acceleration.y;
-    z = acceleration.z;
+
+    //degreZ = 180 / Math.PI * (Math.acos(acceleration.z/9.81));
 
     degreX = 180 / Math.PI * (Math.acos(acceleration.x/9.81));
     degreY = 180 / Math.PI * (Math.acos(acceleration.y/9.81));
-    degreZ = 180 / Math.PI * (Math.acos(acceleration.z/9.81));
 
-    document.getElementById("x").innerHTML = degreX;
-    document.getElementById("y").innerHTML = degreY;
-    document.getElementById("z").innerHTML = degreZ;
+    if (!lastX) {
+        //console.log("Premiere valeur X: " + degreX);
+        document.getElementById("x").innerHTML = degreX;
+        lastX = degreX;
+    } else {
+        differenceX = Math.abs(degreX - lastX);
+        //console.log("----------------------------------");
+        //console.log("Nouvelle valeur X: " + degreX);
+        //console.log("Ancienne valeur X: " + lastX);
+        //console.log("Différence: " + differenceX);
+        if (differenceX > denoiserRatio) {
+            //console.log("Modifier la valeur");
+            document.getElementById("x").innerHTML = degreX;
+            lastX = degreX;
+        }
+    }
+
+    if (!lastY) {
+        document.getElementById("y").innerHTML = degreY;
+        lastY = degreX;
+    } else {
+        differenceY = Math.abs(degreY - lastY);  
+        if (differenceY > denoiserRatio) {
+            document.getElementById("y").innerHTML = degreY;
+            lastY = degreY;
+        }    
+    }
 }
  
 function onError () {
