@@ -16,6 +16,7 @@ var app = {
 
 var lastX;
 var lastY;
+//Définition de notre ratio de comparaison des valeurs
 var denoiserRatio = 10;
 function onSuccess (acceleration) {
 
@@ -24,27 +25,27 @@ function onSuccess (acceleration) {
     degreX = 180 / Math.PI * (Math.acos(acceleration.x/9.81));
     degreY = 180 / Math.PI * (Math.acos(acceleration.y/9.81));
 
+    // Si l'ancienne valeur de x n'est pas défini, on l'affiche de suite dans le navigateur puis on la stocke en tant qu'ancienne valeur.
     if (!lastX) {
-        //console.log("Premiere valeur X: " + degreX);
         document.getElementById("x").innerHTML = degreX;
         lastX = degreX;
     } else {
+        // Si l'ancienne valeur de x est défini, on compare les 2 valeurs de x pour garder la différence (on utilise la valeur absolue Math.abs pour éviter d'avoir une différence négative).
+        //Si cette différence est supérieure à 1, on affiche la nouvelle valeur de x et on la stocke en tant qu'ancienne valeur.
         differenceX = Math.abs(degreX - lastX);
-        //console.log("----------------------------------");
-        //console.log("Nouvelle valeur X: " + degreX);
-        //console.log("Ancienne valeur X: " + lastX);
-        //console.log("Différence: " + differenceX);
         if (differenceX > denoiserRatio) {
-            //console.log("Modifier la valeur");
             document.getElementById("x").innerHTML = degreX;
             lastX = degreX;
         }
     }
 
+    // Si l'ancienne valeur de y n'est pas défini, on l'affiche de suite dans le navigateur puis on la stocke en tant qu'ancienne valeur.
     if (!lastY) {
         document.getElementById("y").innerHTML = degreY;
         lastY = degreX;
     } else {
+        // Si l'ancienne valeur de y est défini, on compare les 2 valeurs de y pour garder la différence (on utilise la valeur absolue Math.abs pour éviter d'avoir une différence négative).
+        //Si cette différence est supérieure à 1, on affiche la nouvelle valeur de y et on la stocke en tant qu'ancienne valeur.
         differenceY = Math.abs(degreY - lastY);  
         if (differenceY > denoiserRatio) {
             document.getElementById("y").innerHTML = degreY;
