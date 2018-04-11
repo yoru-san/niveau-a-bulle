@@ -9,7 +9,7 @@ var app = {
 
     // deviceready Event Handler
     onDeviceReady: function() {
-    var options = { frequency: 1000 };  // Update every 1 seconds
+    var options = { frequency: 10 };  // Update every 10 milliseconds
     var watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
     },
 };
@@ -36,6 +36,10 @@ function onSuccess (acceleration) {
         if (differenceX > denoiserRatio) {
             document.getElementById("x").innerHTML = degreX;
             lastX = degreX;
+            var marginX = lastX;
+            if (lastX >= 130)
+                marginX = 130;
+            $("#bubble").css("margin-top", marginX + "px");
         }
     }
 
@@ -50,6 +54,10 @@ function onSuccess (acceleration) {
         if (differenceY > denoiserRatio) {
             document.getElementById("y").innerHTML = degreY;
             lastY = degreY;
+            var marginY = lastY;
+            if (lastY >= 130)
+                marginY = 130;
+            $("#bubble").css("margin-left", marginY + "px");
         }    
     }
 }
